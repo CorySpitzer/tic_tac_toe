@@ -40,12 +40,13 @@ class Board
     end
 
     def is_occupied?(i, j)
-        @tiles[j, i] == '_'
+        @tiles[j][i] != '_'
     end
 
     def print_board
         (0..2).each do |i|
             (0..2).each do |j|
+                # puts "@tiles[i][j]:" + @tiles[i][j]
                 print @tiles[i][j] + ' '
             end
             puts
