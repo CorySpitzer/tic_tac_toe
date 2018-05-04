@@ -46,8 +46,10 @@ class Board
     def print_board
         (0..2).each do |i|
             (0..2).each do |j|
+                # puts 'j: ' + j.to_s
+                # puts 'i: ' + i.to_s
                 # puts "@tiles[i][j]:" + @tiles[i][j]
-                print @tiles[i][j] + ' '
+                print @tiles[i][j] #+ ' '
             end
             puts
         end
@@ -70,7 +72,7 @@ class Player
             if board.is_occupied?(vertical_down, horizontal_across)
                 puts "Square already taken, try again"
             else
-                board.tiles[vertical_down, horizontal_across] = @mark
+                board.tiles[vertical_down][horizontal_across] = @mark
                 break
             end
         end
@@ -82,6 +84,7 @@ end
 
 def main()
     board = Board.new
+    # board.print_board
     winner = false
     player_x = Player.new('x')
     player_o = Player.new('o')
