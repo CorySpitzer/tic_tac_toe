@@ -89,15 +89,16 @@ def main()
     player_x = Player.new('x')
     player_o = Player.new('o')
     current_player = player_x
-    while !board.is_winner?
+    while !winner
         current_player.take_turn(board)
+        winner = board.is_winner? current_player
+        if winner
+            puts "The " + current_player.mark + " player won!"
+        end
         if current_player.mark == 'x'
             current_player = player_o
         else #if current_player.mark == 'o'
             current_player = player_x
-        end
-        if board.is_winner? current_player
-            puts "The " + current_player.mark + "player won!"
         end
     end
 end
