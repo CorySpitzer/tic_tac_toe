@@ -39,6 +39,10 @@ class Board
         end
     end
 
+    def is_occupied?
+        @tiles != '_'
+    end
+
     def print
         (0..2).each do |i|
             (0..2).each do |j|
