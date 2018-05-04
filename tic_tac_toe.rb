@@ -57,9 +57,17 @@ class Player
     def take_turn(board)
         # only place in unoccupied spot
         # get move location
-        puts "Enter your move, 00 for the top left"
-        location = gets.chomp
-        board.tiles[location[1]][location[0]]
+        while true
+            puts "Enter your move, 00 for the top left:"
+            location = gets.chomp
+            if board.is_occupied?(location[1], location[2])
+                puts "Square already taken, try again"
+            else
+                board.tiles[location[1].to_i][location[0].to_i] = @mark
+                break
+            end
+        end
+        board.print
     end
 
     attr_reader :mark
@@ -68,10 +76,17 @@ end
 def main()
     board = Board.new
     winner = false
-    current_player = 'x'
+    player_x = Player.new('x')
+    player_o = Player.new('o')
+    current_player = player_x
     while !winner
-        current_player.take_turn
+        current_player.take_turn(board)
         winner = board.is_winner?
+        if current_player.mark == 'x'
+            current_player = player_o
+        else #if current_player.mark == 'o'
+            current_player = player_x
+        end
     end
 end
 
