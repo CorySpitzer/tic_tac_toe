@@ -65,10 +65,23 @@ class Player
         # only place in unoccupied spot
         # get move location
         while true
-            puts "Vertical down 1..3"
-            vertical_down = gets.chomp.to_i - 1
-            puts "Horizontal across 1..3"
-            horizontal_across = gets.chomp.to_i - 1
+            vertical_down = -1
+            while true
+                puts "Vertical down 1..3"
+                vertical_down = gets.chomp.to_i - 1
+                if vertical_down >= 0 && vertical_down <= 2
+                    break
+                end
+                puts "Try again"
+            end
+            while true
+                puts "Horizontal across 1..3"
+                horizontal_across = gets.chomp.to_i - 1
+                if horizontal_across >= 0 && horizontal_across <= 2
+                    break
+                end
+                puts "Try again"
+            end
             if board.is_occupied?(vertical_down, horizontal_across)
                 puts "Square already taken, try again"
             else
