@@ -39,8 +39,8 @@ class Board
         end
     end
 
-    def is_occupied?
-        @tiles != '_'
+    def is_occupied?(i, j)
+        @tiles[j, i] != '_'
     end
 
     def print
@@ -64,7 +64,7 @@ class Player
         while true
             puts "Enter your move, 00 for the top left:"
             location = gets.chomp
-            if board.is_occupied?(location[1], location[2])
+            if board.is_occupied?(location[0], location[1])
                 puts "Square already taken, try again"
             else
                 board.tiles[location[1].to_i][location[0].to_i] = @mark
