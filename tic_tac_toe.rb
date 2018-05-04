@@ -40,13 +40,13 @@ class Board
     end
 
     def is_occupied?(i, j)
-        @tiles[j, i] != '_'
+        @tiles[j, i] == '_'
     end
 
-    def print
+    def print_board
         (0..2).each do |i|
             (0..2).each do |j|
-                puts @tiles[i][j] + ' '
+                print @tiles[i][j] + ' '
             end
             puts
         end
@@ -63,15 +63,15 @@ class Player
         # get move location
         while true
             puts "Enter your move, 00 for the top left:"
-            location = gets.chomp
+            location = gets.chomp.to_i
             if board.is_occupied?(location[0], location[1])
                 puts "Square already taken, try again"
             else
-                board.tiles[location[1].to_i][location[0].to_i] = @mark
+                board.tiles[location[1]][location[0]] = @mark
                 break
             end
         end
-        board.print
+        board.print_board
     end
 
     attr_reader :mark
@@ -85,7 +85,7 @@ def main()
     current_player = player_x
     while !winner
         current_player.take_turn(board)
-        winner = board.is_winner?
+        winner = board.is_winner? current_player
         if current_player.mark == 'x'
             current_player = player_o
         else #if current_player.mark == 'o'
