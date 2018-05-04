@@ -39,8 +39,8 @@ class Board
         end
     end
 
-    def is_occupied?(i, j)
-        @tiles[j][i] != '_'
+    def is_occupied?(v, h)
+        @tiles[v][h] != '_'
     end
 
     def print_board
