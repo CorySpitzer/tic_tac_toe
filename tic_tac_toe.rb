@@ -62,12 +62,14 @@ class Player
         # only place in unoccupied spot
         # get move location
         while true
-            puts "Enter your move, 00 for the top left:"
-            location = gets.chomp.to_i
-            if board.is_occupied?(location[0], location[1])
+            puts "Vertical down 0..2"
+            vertical_down = gets.chomp.to_i
+            puts "Horizontal across 0..2"
+            horizontal_across = gets.chomp.to_i
+            if board.is_occupied?(vertical_down, horizontal_across)
                 puts "Square already taken, try again"
             else
-                board.tiles[location[1]][location[0]] = @mark
+                board.tiles[vertical_down, horizontal_across] = @mark
                 break
             end
         end
