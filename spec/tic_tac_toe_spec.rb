@@ -1,19 +1,15 @@
-require "tic_tac_toe_lib"
-
-describe Board do
-    # describe "#place" do
-    #     context "given x, y, and a mark" do
-    #         it "puts a mark in that position" do
-    #             expect(Board.place(0, 0, 'x')).to
-    #                 eql([['_', '_', '_'],
-    #                      ['_', 'x', '_'],
-    #                      ['_', '_', '_']])
-    #
-    #         end
-    #     end
-    # end
-end
-
-describe Player do
-
-end
+# require "tic_tac_toe_lib"
+#
+# describe Board do
+#     describe "#print_board" do
+#         context "without any input" do
+#             it "returns a representation of the board" do
+#                 expect(Board.new.print_board).to output("\n___\n___\n___").to_stdout
+#             end
+#         end
+#     end
+# end
+#
+# describe Player do
+#
+# end

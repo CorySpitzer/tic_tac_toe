@@ -43,10 +43,7 @@ class Board
         puts
         (0..2).each do |i|
             (0..2).each do |j|
-                # puts 'j: ' + j.to_s
-                # puts 'i: ' + i.to_s
-                # puts "@tiles[i][j]:" + @tiles[i][j]
-                print @tiles[i][j] #+ ' '
+                print @tiles[i][j]
             end
             puts
         end
