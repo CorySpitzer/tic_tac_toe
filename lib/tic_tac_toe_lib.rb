@@ -7,10 +7,6 @@ class Board
 
     attr_accessor :tiles
 
-    def place(x, y, mark) # x,y co-ordinates i.e. [1,2]
-        @tiles[y, x] = mark
-    end
-
     def is_winner?(player)
         # Check the two diagonals:
         if player.mark == @tiles[1][1]
