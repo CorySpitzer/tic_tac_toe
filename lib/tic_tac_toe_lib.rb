@@ -57,19 +57,26 @@ class Player
         @is_ai = is_ai
     end
 
+    # def ai_move(board)
+    #     board.tiles[0][0]
+    # end
+
     def ai_move(board)
-        board.tiles[0][0]
-    end
-
-    def ai_move
-
+        while true
+            vertical_down = rand 3
+            horizontal_across = rand 3
+            if !board.is_occupied?(vertical_down, horizontal_across)
+                board.tiles[vertical_down][horizontal_across] = @mark
+                break
+            end
+        end
     end
 
     def take_turn(board)
         # only place in unoccupied spot
         # get move location
         if @is_ai
-            ai_move
+            ai_move(board)
         else # humans
             while true
                 vertical_down = -1
