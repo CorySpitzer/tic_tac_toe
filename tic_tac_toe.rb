@@ -7,6 +7,18 @@ def main()
     player_x = Player.new('x')
     player_o = Player.new('o')
     current_player = player_x
+    while true
+        puts "Play against AI or just humans? 'h' for humans"
+        if gets.chomp.downcase == 'h'
+            # Game.new.play('human')
+        else
+            # Game.new.play('ai')
+        end
+        puts "Press 'p' to play again"
+        if gets.chomp.downcase != 'p'
+            break
+        end
+    end
     while !winner
         current_player.take_turn(board)
         winner = board.is_winner? current_player

@@ -89,3 +89,7 @@ class Player
 
     attr_reader :mark
 end
+
+class Game
+
+end
