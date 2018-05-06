@@ -3,36 +3,52 @@ class Board
         @tiles = [['_', '_', '_'],
                   ['_', '_', '_'],
                   ['_', '_', '_']]
+        @moves = []
     end
 
-    attr_accessor :tiles
+    attr_accessor :tiles, :moves
 
-    def is_winner?(player)
+    def is_winner?(mark)
         # Check the two diagonals:
-        if player.mark == @tiles[1][1]
-            if player.mark == @tiles[0][0] && player.mark == @tiles[2][2] ||
-               player.mark == @tiles[0][2] && player.mark == @tiles[2][0]
+        if mark == @tiles[1][1]
+            if mark == @tiles[0][0] && mark == @tiles[2][2] ||
+               mark == @tiles[0][2] && mark == @tiles[2][0]
                 return true
             end
         # Check the top row or first column
-        elsif player.mark == @tiles[0][0]
+        elsif mark == @tiles[0][0]
             # top row
-            if player.mark == @tiles[0][1] && player.mark == @tiles[0][2] ||
+            if mark == @tiles[0][1] && mark == @tiles[0][2] ||
                # first column
-               player.mark == @tiles[1][0] && player.mark == @tiles[2][0]
+               mark == @tiles[1][0] && mark == @tiles[2][0]
                 return true
             end
         # Check the bottom row or last column
-        elsif player.mark == @tiles[2][2]
+        elsif mark == @tiles[2][2]
             # bottom row
-            if player.mark == @tiles[2][1] && player.mark == @tiles[2][0] ||
+            if mark == @tiles[2][1] && mark == @tiles[2][0] ||
                # last column
-               player.mark == @tiles[1][2] && player.mark == @tiles[0][2]
+               mark == @tiles[1][2] && mark == @tiles[0][2]
                 return true
             end
         else
             false
         end
+    end
+
+    def make_move(move, mark)
+        self.tiles[move[1]][move[0]] = mark
+    end
+
+    def available_moves()
+        (0..2).each do |i|
+            (0..2).each do |j|
+                if @tiles[j][i] == '_'
+                    @moves << [j, i]
+                end
+            end
+        end
+        @moves
     end
 
     def is_occupied?(v, h)
@@ -54,6 +70,10 @@ end
 class Player
     def initialize(mark, is_ai) # such as 'x' or 'o'
         @mark = mark
+        if @mark == 'x'
+            @other = 'o'
+        else
+            @other = 'x'
         @is_ai = is_ai
     end
 
@@ -61,14 +81,34 @@ class Player
     #     board.tiles[0][0]
     # end
 
-    def ai_move(board)
-        while true
-            vertical_down = rand 3
-            horizontal_across = rand 3
-            if !board.is_occupied?(vertical_down, horizontal_across)
-                board.tiles[vertical_down][horizontal_across] = @mark
-                break
-            end
+    def minimax(board, lowerbound, upperbound)
+        # while true
+        #     vertical_down = rand 3
+        #     horizontal_across = rand 3
+        #     if !board.is_occupied?(vertical_down, horizontal_across)
+        #         board.tiles[vertical_down][horizontal_across] = @mark
+        #         break
+        #     end
+        # end
+
+        # The following minimax leans heavily on https://tinyurl.com/yanf74x8
+        if board.is_winner? @mark || board.is_winner? @other
+            return get_score(@mark)
+        end
+        candidate_move_nodes = []
+        board.moves.each do |move|
+            child_board = board.make_move(move)
+        end
+
+    end
+
+    def get_score()
+        if is_winner?(@mark)
+            @base_score
+        elsif is_winner?(@other)
+            -@base_score
+        else
+            0
         end
     end
 
