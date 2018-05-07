@@ -4,9 +4,9 @@ def main()
     while true
         puts "Play against AI or just humans? 'h' for humans"
         if gets.chomp.downcase == 'h'
-            Game.new.play('human')
+            game = Game.new(false).play()
         else
-            Game.new.play('ai')
+            Game.new(true).play()
         end
         puts "Press 'p' to play again"
         if gets.chomp.downcase != 'p'

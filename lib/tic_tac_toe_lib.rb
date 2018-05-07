@@ -1,8 +1,8 @@
 class Board
     def initialize
-        @tiles = [['_', '_', '_'],
-                  ['_', '_', '_'],
-                  ['_', '_', '_']]
+        @tiles = ['_', '_', '_',
+                  '_', '_', '_',
+                  '_', '_', '_']
         @moves = []
     end
 
@@ -51,17 +51,17 @@ class Board
         @moves
     end
 
-    def is_occupied?(v, h)
-        @tiles[v][h] != '_'
+    def is_occupied?(move)
+        @tiles[move] != '_'
     end
 
     def print_board
         puts
-        (0..2).each do |i|
-            (0..2).each do |j|
-                print @tiles[i][j]
+        (0..8).each do |i|
+            print @tiles[i]
+            if (i + 1) % 3 == 0
+                puts
             end
-            puts
         end
         puts
     end
@@ -75,42 +75,76 @@ class Player
         else
             @other = 'x'
         @is_ai = is_ai
+        end
     end
+
+    attr_reader :mark
 
     # def ai_move(board)
     #     board.tiles[0][0]
     # end
 
-    def minimax(board, lowerbound, upperbound)
-        # while true
-        #     vertical_down = rand 3
-        #     horizontal_across = rand 3
-        #     if !board.is_occupied?(vertical_down, horizontal_across)
-        #         board.tiles[vertical_down][horizontal_across] = @mark
-        #         break
-        #     end
-        # end
+    # The following minimax leans heavily on https://tinyurl.com/yanf74x8
+    # Node = Struct.new(:score, :move)
+    #
+    # def minmax(board, lowerbound, upperbound)
+    #     if board.is_winner? @mark || board.is_winner? @other
+    #         return get_score(@mark)
+    #     end
+    #     candidate_move_nodes = []
+    #     board.moves.each do |move|
+    #         child_board = board.make_move(move, @mark)
+    #         score = minmax(child_board, lower_bound, upper_bound)
+    #         node = Node.new(score, move)
+    #         candidate_move_nodes << node
+    #     end
+    #
+    # end
+    #
+    # def get_score()
+    #     if is_winner?(@mark)
+    #         10
+    #     elsif is_winner?(@other)
+    #         -10
+    #     else
+    #         0
+    #     end
+    # end
 
-        # The following minimax leans heavily on https://tinyurl.com/yanf74x8
-        if board.is_winner? @mark || board.is_winner? @other
-            return get_score(@mark)
-        end
-        candidate_move_nodes = []
-        board.moves.each do |move|
-            child_board = board.make_move(move)
-        end
+    # leans heavily on https://tinyurl.com/yanf74x8
+    # def minimax(game, depth)
+    #     return score(game) if game.over?
+    #     depth += 1
+    #     scores = [] # an array of scores
+    #     moves = []  # an array of moves
+    #
+    #     # Populate the scores array, recursing as needed
+    #     game.get_available_moves.each do |move|
+    #         possible_game = game.get_new_state(move)
+    #         scores.push minimax(possible_game, depth)
+    #         moves.push move
+    #     end
+    #
+    #     # Do the min or the max calculation
+    #     if game.active_turn == @player
+    #         # This is the max calculation
+    #         max_score_index = scores.each_with_index.max[1]
+    #         @choice = moves[max_score_index]
+    #         return scores[max_score_index]
+    #     else
+    #         # This is the min calculation
+    #         min_score_index = scores.each_with_index.min[1]
+    #         @choice = moves[min_score_index]
+    #         return scores[min_score_index]
+    #     end
+    # end
 
-    end
-
-    def get_score()
-        if is_winner?(@mark)
-            @base_score
-        elsif is_winner?(@other)
-            -@base_score
-        else
-            0
-        end
-    end
+    # def minimax(board)
+    #     if board.is_winner? @mark || board.is_winner? @other
+    #         return get_score(@mark)
+    #     best_moves = []
+    #
+    # end
 
     def take_turn(board)
         # only place in unoccupied spot
@@ -119,47 +153,37 @@ class Player
             ai_move(board)
         else # humans
             while true
-                vertical_down = -1
+                # move = -1
                 while true
-                    puts "Vertical down 1..3"
-                    vertical_down = gets.chomp.to_i - 1
-                    if vertical_down >= 0 && vertical_down <= 2
+                    puts "Select move 1..9"
+                    move = gets.chomp.to_i - 1
+                    if move >= 0 && move <= 8
                         break
                     end
                     puts "Try again"
                 end
-                while true
-                    puts "Horizontal across 1..3"
-                    horizontal_across = gets.chomp.to_i - 1
-                    if horizontal_across >= 0 && horizontal_across <= 2
-                        break
-                    end
-                    puts "Try again"
-                end
-                if board.is_occupied?(vertical_down, horizontal_across)
+                if board.is_occupied?(move)
                     puts "Square already taken, try again"
                 else
-                    board.tiles[vertical_down][horizontal_across] = @mark
+                    board.tiles[move] = @mark
                     break
                 end
             end
         end
         board.print_board
     end
-
-    attr_reader :mark
 end
 
 class Game
-    def initialize()
-        # @is_ai = is_ai
+    def initialize(is_ai)
+        @is_ai = is_ai
     end
 
-    def play(is_ai)
+    def play()
         board = Board.new
         # board.print_board
         winner = false
-        player_x = Player.new('x', is_ai) #AI
+        player_x = Player.new('x', @is_ai) #AI
         player_o = Player.new('o', false)
         # who goes first?
         current_player = player_x
