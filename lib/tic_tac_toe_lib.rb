@@ -37,15 +37,15 @@ class Board
     end
 
     def make_move(move, mark)
-        self.tiles[move[1]][move[0]] = mark
+        # puts move
+        @tiles[move] = mark
+        self
     end
 
     def available_moves()
-        (0..2).each do |i|
-            (0..2).each do |j|
-                if @tiles[j][i] == '_'
-                    @moves << [j, i]
-                end
+        (0..8).each do |i|
+            if @tiles[i] == '_'
+                @moves << i
             end
         end
         @moves
@@ -74,83 +74,69 @@ class Player
             @other = 'o'
         else
             @other = 'x'
-        @is_ai = is_ai
+            @mark = 'o'
         end
+        @is_ai = is_ai
+        @choice = 5
     end
 
     attr_reader :mark
+    attr_accessor :choice
 
-    # def ai_move(board)
-    #     board.tiles[0][0]
-    # end
+    def ai_move(board, game)
+        minimax(board, game)
+        board.tiles[@choice] = @mark
+    end
 
-    # The following minimax leans heavily on https://tinyurl.com/yanf74x8
-    # Node = Struct.new(:score, :move)
-    #
-    # def minmax(board, lowerbound, upperbound)
-    #     if board.is_winner? @mark || board.is_winner? @other
-    #         return get_score(@mark)
-    #     end
-    #     candidate_move_nodes = []
-    #     board.moves.each do |move|
-    #         child_board = board.make_move(move, @mark)
-    #         score = minmax(child_board, lower_bound, upper_bound)
-    #         node = Node.new(score, move)
-    #         candidate_move_nodes << node
-    #     end
-    #
-    # end
-    #
-    # def get_score()
-    #     if is_winner?(@mark)
-    #         10
-    #     elsif is_winner?(@other)
-    #         -10
-    #     else
-    #         0
-    #     end
-    # end
+    def get_score()
+        if is_winner?(@mark)
+            10
+        elsif is_winner?(@other)
+            -10
+        else
+            0
+        end
+    end
 
     # leans heavily on https://tinyurl.com/yanf74x8
-    # def minimax(game, depth)
-    #     return score(game) if game.over?
-    #     depth += 1
-    #     scores = [] # an array of scores
-    #     moves = []  # an array of moves
-    #
-    #     # Populate the scores array, recursing as needed
-    #     game.get_available_moves.each do |move|
-    #         possible_game = game.get_new_state(move)
-    #         scores.push minimax(possible_game, depth)
-    #         moves.push move
-    #     end
-    #
-    #     # Do the min or the max calculation
-    #     if game.active_turn == @player
-    #         # This is the max calculation
-    #         max_score_index = scores.each_with_index.max[1]
-    #         @choice = moves[max_score_index]
-    #         return scores[max_score_index]
-    #     else
-    #         # This is the min calculation
-    #         min_score_index = scores.each_with_index.min[1]
-    #         @choice = moves[min_score_index]
-    #         return scores[min_score_index]
-    #     end
-    # end
 
-    # def minimax(board)
-    #     if board.is_winner? @mark || board.is_winner? @other
-    #         return get_score(@mark)
-    #     best_moves = []
-    #
-    # end
+    def minimax(board, game) #depth can be here
+        p "103: "
+        p Board.method_defined? :is_winner?
+        # p board.methods.sort
+        if (board.is_winner?(@mark) || board.is_winner?(@other))
+            return get_score(@mark)
+        end
+        # depth += 1
+        scores = []
+        best_moves = []
+        board.available_moves.each do |move|
+            scores.push self.minimax(board.make_move(move, @mark), game)
+            moves.push move
+        end
 
-    def take_turn(board)
+        # directly from https://tinyurl.com/yanf74x8
+        if game.current_player == @mark
+            max_score_index = scores.each_with_index.max[1]
+            @choice = moves[max_score_index]
+            return scores[max_score_index]
+        else
+           # This is the min calculation
+           min_score_index = scores.each_with_index.min[1]
+           @choice = moves[min_score_index]
+           return scores[min_score_index]
+        end
+    end
+
+    def take_turn(board, game)
         # only place in unoccupied spot
         # get move location
+        # puts @is_ai
         if @is_ai
-            ai_move(board)
+            # puts 'ai turn'
+            # puts board
+            ai_move(board, game)
+            # p board.methods.sort
         else # humans
             while true
                 # move = -1
@@ -177,26 +163,32 @@ end
 class Game
     def initialize(is_ai)
         @is_ai = is_ai
+        @current_player = nil
     end
+
+    attr_accessor :current_player
 
     def play()
         board = Board.new
         # board.print_board
         winner = false
         player_x = Player.new('x', @is_ai) #AI
+        # puts "ai true" if @is_ai
         player_o = Player.new('o', false)
         # who goes first?
-        current_player = player_x
+        @current_player = player_x
         while !winner
-            current_player.take_turn(board)
-            winner = board.is_winner? current_player.mark
+            # puts "board: " + board
+            # p board.methods.sort
+            @current_player.take_turn(board, self)
+            winner = board.is_winner? @current_player.mark
             if winner
-                puts "The " + current_player.mark + " player won!"
+                puts "The " + @current_player.mark + " player won!"
             end
-            if current_player.mark == 'x'
-                current_player = player_o
-            else #if current_player.mark == 'o'
-                current_player = player_x
+            if @current_player.mark == 'x'
+                @current_player = player_o
+            else #if @current_player.mark == 'o'
+                @current_player = player_x
             end
         end
     end
