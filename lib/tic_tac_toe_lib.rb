@@ -10,25 +10,25 @@ class Board
 
     def is_winner?(mark)
         # Check the two diagonals:
-        if mark == @tiles[1][1]
-            if mark == @tiles[0][0] && mark == @tiles[2][2] ||
-               mark == @tiles[0][2] && mark == @tiles[2][0]
+        if mark == @tiles[4]
+            if mark == @tiles[0] && mark == @tiles[8] ||
+               mark == @tiles[6] && mark == @tiles[2]
                 return true
             end
         # Check the top row or first column
-        elsif mark == @tiles[0][0]
+        elsif mark == @tiles[0]
             # top row
-            if mark == @tiles[0][1] && mark == @tiles[0][2] ||
+            if mark == @tiles[1] && mark == @tiles[2] ||
                # first column
-               mark == @tiles[1][0] && mark == @tiles[2][0]
+               mark == @tiles[3] && mark == @tiles[6]
                 return true
             end
         # Check the bottom row or last column
-        elsif mark == @tiles[2][2]
+        elsif mark == @tiles[8]
             # bottom row
-            if mark == @tiles[2][1] && mark == @tiles[2][0] ||
+            if mark == @tiles[6] && mark == @tiles[7] ||
                # last column
-               mark == @tiles[1][2] && mark == @tiles[0][2]
+               mark == @tiles[2] && mark == @tiles[5]
                 return true
             end
         else
@@ -189,7 +189,7 @@ class Game
         current_player = player_x
         while !winner
             current_player.take_turn(board)
-            winner = board.is_winner? current_player
+            winner = board.is_winner? current_player.mark
             if winner
                 puts "The " + current_player.mark + " player won!"
             end
