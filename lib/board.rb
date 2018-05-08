@@ -36,6 +36,18 @@ class Board
         end
     end
 
+    def game_over?(mark)
+        is_winner? mark || draw?
+    end
+
+    def draw()
+        if !(is_winner?('x') || is_winner?('o')) &&
+            available_moves.length == 0
+            true
+        end
+        false
+    end
+
     def make_move(move, mark)
         # puts move
         @tiles[move] = mark

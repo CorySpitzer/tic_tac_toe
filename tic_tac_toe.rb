@@ -1,6 +1,6 @@
-require_relative "lib/board"
-require_relative "lib/player"
-require_relative "lib/game"
+require "./lib/board"
+require "./lib/player"
+require "./lib/game"
 
 def main()
     while true

@@ -35,7 +35,7 @@ class Player
         # p "103: "
         # p Board.method_defined? :is_winner?
         # p board.methods.sort
-        if (board.is_winner?(@mark) || board.is_winner?(@other))
+        if board.game_over? mark
             return get_score(@mark)
         end
         # depth += 1
