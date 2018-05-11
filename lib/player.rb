@@ -1,4 +1,4 @@
-class Player
+    class Player
     def initialize(mark, is_ai) # such as 'x' or 'o'
         @mark = mark
         if @mark == 'x'
@@ -15,14 +15,14 @@ class Player
     attr_accessor :choice
 
     def ai_move(board, game)
-        minimax(board, game)
+        minimax(board, game, 0)
         board.tiles[@choice] = @mark
     end
 
-    def get_score()
-        if is_winner?(@mark)
+    def get_score(board)
+        if board.is_winner?(@mark)
             10
-        elsif is_winner?(@other)
+        elsif board.is_winner?(@other)
             -10
         else
             0
@@ -31,18 +31,19 @@ class Player
 
     # leans heavily on https://tinyurl.com/yanf74x8
 
-    def minimax(board, game) #depth can be here
+    def minimax(board, game, depth) #depth can be here
         # p "103: "
         # p Board.method_defined? :is_winner?
         # p board.methods.sort
-        if board.game_over? mark
-            return get_score(@mark)
+        if (board.game_over? @mark) || (depth >= 9)
+            return get_score(board)
         end
-        # depth += 1
+        depth += 1
+        p "depth: " + depth.to_s
         scores = []
-        best_moves = []
+        moves = []
         board.available_moves.each do |move|
-            scores.push self.minimax(board.make_move(move, @mark), game)
+            scores.push self.minimax(board.make_move(move, @mark), game, depth)
             moves.push move
         end
 

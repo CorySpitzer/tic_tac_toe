@@ -11,6 +11,7 @@ class Game
         # board.print_board
         winner = false
         player_x = Player.new('x', @is_ai) #AI
+        puts 'x is AI'
         # puts "ai true" if @is_ai
         player_o = Player.new('o', false)
         # who goes first?
@@ -22,6 +23,9 @@ class Game
             winner = board.is_winner? @current_player.mark
             if winner
                 puts "The " + @current_player.mark + " player won!"
+            elsif board.draw
+                winner = false
+                puts "It's a draw!"
             end
             if @current_player.mark == 'x'
                 @current_player = player_o

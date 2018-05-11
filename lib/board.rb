@@ -42,7 +42,7 @@ class Board
 
     def draw()
         if !(is_winner?('x') || is_winner?('o')) &&
-            available_moves.length == 0
+            self.available_moves.length == 0
             true
         end
         false
