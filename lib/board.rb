@@ -57,6 +57,8 @@ class Board
     def available_moves()
         (0..8).each do |i|
             if @tiles[i] == '_'
+                p "i: " + i.to_s
+                p "@tiles[i] == '_'"
                 @moves << i
             end
         end

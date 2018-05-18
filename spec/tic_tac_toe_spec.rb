@@ -27,14 +27,3 @@ end
 # describe Player do
 #
 # end
-
-
-When I run rspec I get this:
-
-$ rspec
-/usr/bin/env: ‘ruby2.1’: No such file or directory
-
-but that's not my ruby version
-
-$ ruby -v
-ruby 2.3.1p112 (2016-04-26) [x86_64-linux-gnu]

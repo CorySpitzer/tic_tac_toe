@@ -39,12 +39,18 @@
             return get_score(board)
         end
         depth += 1
-        p "depth: " + depth.to_s
+        # p "depth: " + depth.to_s
         scores = []
         moves = []
+        p "board.available_moves: "
+        p board.available_moves
         board.available_moves.each do |move|
-            scores.push self.minimax(board.make_move(move, @mark), game, depth)
+            new_board = board.make_move(move, @mark)
+            new_board.print_board
+            scores.push self.minimax(new_board, game, depth)
             moves.push move
+            # p 'move: ' + move.to_s
+
         end
 
         # directly from https://tinyurl.com/yanf74x8
